@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumina Salon | Reveal Your Radiance</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #c026d3;
+      --soft-pink: #fce7f3;
+      --nude: #fdf4f0;
+      --dark: #4c1d95;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+      color: #444;
+      background: linear-gradient(grey,cyan);
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism Navbar */
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      transition: all 0.4s ease;
+    }
+
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 12px 0;
+    }
+
+    nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      color : white;
+      text-shadow: 3px 2px rgba(0,0,0,0.8);
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #444;
+      text-shadow:3px 2px rgba(0,0,0,0.8);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Animated Hamburger */
+    .hamburger {
+      display: none;
+      width: 30px;
+      height: 24px;
+      position: relative;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #444;
+      border-radius: 3px;
+      transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .hamburger span:nth-child(1) { top: 2px; }
+    .hamburger span:nth-child(2) { top: 10px; }
+    .hamburger span:nth-child(3) { top: 18px; }
+
+    .hamburger.active span:nth-child(1) {
+      top: 10px;
+      transform: rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      top: 10px;
+      transform: rotate(-45deg);
+    }
+
+    /* Modern Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100vh;
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      padding: 100px 40px 40px;
+      transition: left 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+      z-index: 999;
+      box-shadow: 2px 0 30px rgba(0,0,0,0.1);
+    }
+
+    .mobile-menu.active {
+      left: 0;
+    }
+
+    .mobile-menu a {
+      font-size: 1.5rem;
+      padding: 18px 0;
+      color: white;
+      text-shadow: 3px 2px rgba(0,0,0,0.8);
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--primary);
+      padding-left: 12px;
+    }
+
+    /* Floating WhatsApp with Animation */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #25D366;
+      color: white;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
+      z-index: 2000;
+      transition: transform 0.3s;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.15);
+      animation-play-state: paused;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:url("h4.jpg");
+      background-size:cover;
+      z-index: 1;
+      will-change: transform;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.35rem;
+      margin-bottom: 40px;
+      opacity: 0.95;
+    }
+
+    .cta-button {
+      background: white;
+      color: var(--dark);
+      padding: 18px 48px;
+      border: none;
+      border-radius: 9999px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    /* Sections */
+    section {
+      padding: 110px 40px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 70px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .service-card {
+      background: linear-gradient(black  ,grey);
+      backdrop-filter: blur(12px);
+      color:white;
+      padding: 35px 25px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.5s ease;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .service-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(192, 38, 211, 0.15);
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      height: 320px;
+      border-radius: 20px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.06);
+    }
+
+    /* Testimonials */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      background: linear-gradient(grey ,cyan);
+      backdrop-filter: blur(12px);
+      padding: 35px;
+      color : yellow;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    /* Contact */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(16px);
+      padding: 50px;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 16px;
+      margin: 12px 0;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(192, 38, 211, 0.15);
+    }
+
+    /* Success Message */
+    #success-message {
+      display: none;
+      background: #10b981;
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      margin: 20px 0;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      nav {
+        padding: 18px 25px;
+      }
+      
+      section {
+        padding: 90px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <nav>
+      <div class="logo">FRECA BEAUTY SALON</div>
+      
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Stories</a>
+        <a href="#contact">Book Now</a>
+      </div>
+
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Modern Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu" style="background-image : url('g1.jpg'); background-size: cover; background-position: center;">
+    <div class="close-btn" id="close-menu">×</div>
+    <a href="#services" onclick="closeMobileMenu()">Services</a>
+    <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
+    <a href="#testimonials" onclick="closeMobileMenu()">Stories</a>
+    <a href="#contact" onclick="closeMobileMenu()">Book Now</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Reveal Your Radiance</h1>
+      <p>Elegant beauty experiences in the heart of Kampala</p>
+      <button class="cta-button" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        Book Your Glow
+      </button>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <h2>Signature Experiences</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Hair Mastery</h3>
+        <p>Luxury cuts, color, extensions & styling</p>
+      </div>
+      <div class="service-card">
+        <h3>Glow Facials</h3>
+        <p>Rejuvenating skincare & advanced treatments</p>
+      </div>
+      <div class="service-card">
+        <h3>Nail Artistry</h3>
+        <p>Custom manicures & premium nail enhancements</p>
+      </div>
+      <div class="service-card">
+        <h3>Bridal Beauty</h3>
+        <p>Full glam for your special day</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" style="background: rgba(253, 244, 240, 0.8);">
+    <h2>Our Artistry</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item" style="background-image: url('s1.jpg')"></div>
+      <div class="gallery-item" style="background-image: url('s2.jpg')"></div>
+      <div class="gallery-item" style="background-image: url('s3.jpg')"></div>
+      <div class="gallery-item" style="background-image: url('s4.jpg')"></div>
+      <div class="gallery-item" style="background-image: url('s5.jpg')"></div>
+      <div class="gallery-item" style="background-image: url('bg1.jpg')"></div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials">
+    <h2>Stories of Glow</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>"I felt like royalty. The best salon experience I've ever had."</p>
+        <strong style="color:red;">— Amina N.</strong>
+      </div>
+      <div class="testimonial-card">
+        <p>"My wedding makeup was flawless. Everyone asked who did it!"</p>
+        <strong style="color:red;">— Sarah K.</strong>
+      </div>
+      <div class="testimonial-card">
+        <p>"The facials here are magic. My skin has never looked better."</p>
+        <strong style="color:red;">— Grace M.</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" style="background: linear-gradient(cyan,pink);">
+    <h2>Begin Your Glow Journey</h2>
+    <div class="contact-form">
+      <form id="booking-form">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required>
+        <input type="text" id="service" placeholder="Preferred Service">
+        <textarea id="message" rows="4" placeholder="Message / Preferred Date"></textarea>
+        
+        <div id="success-message">✅ Request Sent to WhatsApp!</div>
+        
+        <button type="submit" class="cta-button" style="width:100%;">Send to WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/256758991506?text=Hello%20Freca%20Beauty%20Salon%2C%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20your%20services.%20Can%20you%20tell%20me%20more%3F" 
+     class="whatsapp-float" 
+     target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <footer>
+    <p>&copy; 2026 Freca beauty Salon • Kampala, Uganda</p>
+    <p>Elegance • Radiance • You</p>
+  </footer>
+
+  <script>
+    // Parallax
+    const heroBg = document.querySelector('.hero-bg');
+    window.addEventListener('scroll', () => {
+      const scroll = window.scrollY;
+      heroBg.style.transform = `translateY(${scroll * 0.4}px)`;
+    });
+
+    // Header scroll
+    window.addEventListener('scroll', () => {
+      document.querySelector('header').classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    // Modern Mobile Menu + Hamburger Animation
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function toggleMenu() {
+      const isActive = mobileMenu.classList.toggle('active');
+      hamburger.classList.toggle('active', isActive);
+      
+      if (isActive) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'visible';
+      }
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        setTimeout(() => {
+          mobileMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+          document.body.style.overflow = 'visible';
+        }, 300);
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        mobileMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = 'visible';
+      }
+    });
+
+    // ==================== WHATSAPP FORM ====================
+    const form = document.getElementById('booking-form');
+    const successMsg = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const service = document.getElementById('service').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (name === '' || phone === '') {
+        alert("Please fill in your name and phone number.");
+        return;
+      }
+
+      // Build WhatsApp Message
+      let whatsappMessage = `*New Booking Request*%0A%0A`;
+      whatsappMessage += `*Name:* ${name}%0A`;
+      whatsappMessage += `*Phone:* ${phone}%0A`;
+      if (service) whatsappMessage += `*Service:* ${service}%0A`;
+      if (message) whatsappMessage += `*Message:* ${message}%0A`;
+
+      // Open WhatsApp
+      const whatsappURL = `https://wa.me/256758991506?text=${whatsappMessage}`;
+      window.open(whatsappURL, '_blank');
+
+      // Show success message
+      successMsg.style.display = 'block';
+
+      // Reset form
+      setTimeout(() => {
+        form.reset();
+        successMsg.style.display = 'none';
+      }, 4000);
+    });
+
+    console.log("%cFRECA BEAUTY SALON - Ready ✨", "color: #c026d3; font-size: 16px; font-weight: bold");
+  </script>
+</body>
+</html>
